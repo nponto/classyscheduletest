@@ -1,165 +1,185 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>St. Paul Crime Map</title>
-
-    <!-- jQuery -->
-    <script type="application/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-
-    <!-- Vue JS -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-
-    <!-- Application -->
-    <link rel="stylesheet" href="css/style.css"/>
-    <script type="application/javascript" src="scripts/app.js"></script>
-
-    
-
-    
-
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Etsy</title>
+	<link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body onload="init()">
-
-    <a style="font-size: 2rem;" href="about.html"> About this Project </a><br><br>
-
-    <!-- Main app -->
-    <div id="app">
-        <div id="leafletmap"></div>
-    </div>
-
-    <div> 
-        <h1>Location Look Up</h1>
-        <label>Location: </label><input id="location" type="text" placeholder="enter location" style="width: 15rem;"/>
-        <br/><br/>
-        <button id="lookup" type="button">Look Up</button>
-        <button id="address" type="button">Address/LatLng</button>
-        <label for="limit">Limit:</label>
-        <input type="text" id="limit" name="limit">
-        
-        <label for="start_date">Start Date(YYYY-MM-DD):</label>
-        <input type="text" id="start_date" name="start_date">
-        <label for="end_date">End Date(YYYY-MM-DD):</label>
-        <input type="text" id="end_date" name="end_date">
-
-        <br>
-        <br>
-        <br>
-        
-        <input type="checkbox" id="Southeast" name="Southeast" value="1">
-        <label for="Southeast">Southeast</label>
-
-        <input type="checkbox" id="Greater East Side" name="Greater East Side" value="2">
-        <label for="Greater East Side">Greater East Side</label>
-
-        <input type="checkbox" id="West Side" name="West Side" value="3">
-        <label for="West Side">West Side</label>
-
-        <input type="checkbox" id="Dayton's Bluff" name="Dayton's Bluff" value="4">
-        <label for="Dayton's Bluff">Dayton's Bluff</label>
-
-        <input type="checkbox" id="Payne - Phalen" name="Payne - Phalen" value="5">
-        <label for="Payne - Phalen">Payne - Phalen</label>
-
-        <input type="checkbox" id="North End" name="North End" value="6">
-        <label for="North End">North End</label>
-
-        <input type="checkbox" id="Frogtown" name="Frogtown" value="7">
-        <label for="Frogtown">Frogtown</label>
-
-        <input type="checkbox" id="Summit - University" name="Summit - University" value="8">
-        <label for="Summit - University">Summit - University</label>
-
-        <input type="checkbox" id="West Seventh - Fort Road" name="West Seventh - Fort Road" value="9">
-        <label for="West Seventh - Fort Road">West Seventh - Fort Road</label>
-
-        <input type="checkbox" id="Como Park" name="Como Park" value="10">
-        <label for="Como Park">Como Park</label>
-
-        <input type="checkbox" id="Hamline - Midway" name="Hamline - Midway" value="11">
-        <label for="Hamline - Midway">Hamline - Midway</label>
-
-        <input type="checkbox" id="Saint Anthony Park" name="Saint Anthony Park" value="12">
-        <label for="Saint Anthony Park">Saint Anthony Park</label>
-
-        <input type="checkbox" id="Union Park" name="Union Park" value="13">
-        <label for="Union Park">Union Park</label>
-
-        <input type="checkbox" id="Macalester - Groveland" name="Macalester - Groveland" value="14">
-        <label for="Macalester - Groveland">Macalester - Groveland</label>
-
-        <input type="checkbox" id="Highland" name="Highland" value="15">
-        <label for="Highland">Highland</label>
-
-        <input type="checkbox" id="Summit Hill" name="Summit Hill" value="16">
-        <label for="Summit Hill">Summit Hill</label>
-
-        <input type="checkbox" id="Capitol River" name="Capitol River" value="17">
-        <label for="Capitol River">Capitol River</label>       
-        
-        <br>
-        <br>
-        <br>
-
-        <input type="checkbox" id="100" name="Homicide">
-        <label for="100">Homicide</label>  
-
-        <input type="checkbox" id="200" name="Rape">
-        <label for="200">Rape</label>  
-
-        <input type="checkbox" id="300" name="Robbery">
-        <label for="300">Robbery</label>  
-
-        <input type="checkbox" id="500" name="Burglary">
-        <label for="500">Burglary</label>  
-
-        <input type="checkbox" id="600" name="Theft">
-        <label for="600">Theft</label>  
-
-        <input type="checkbox" id="800" name="Assault">
-        <label for="800">Assault</label>  
-
-        <input type="checkbox" id="900" name="Arson">
-        <label for="900">Arson</label>  
-
-        <input type="checkbox" id="1400" name="Vandalism">
-        <label for="1400">Vandalism</label>  
-
-        <input type="checkbox" id="1800" name="Narcotics">
-        <label for="1800">Narcotics</label>  
-
-        <input type="checkbox" id="2619" name="Other">
-        <label for="2619">Other</label>  
-
-        <br>
-        <br>
-        <br>
-
-        <button id="update" type="button">Update</button>
-        <button id="delete" type="button">Delete Extra Markers</button>
-        <br/><br/>
-        <div style="width: 50rem; padding: 0.25rem; border: solid 1px black; overflow: scroll;">
-            <h3 style="margin: 0;">Location Information</h3>
-            <ul id="result"></ul>
+<body>
+    <!-- Navigation for mobile site -->
+	<div class="hide-for-large">
+		<div class="off-canvas-wrapper">
+			<!-- Your menu or Off-canvas content goes here -->
+			<div id="mobileNav" class="off-canvas position-bottom" data-off-canvas>
+			    <!-- Menu Title -->
+				<div class="grid-x grid-padding-x">
+				    <div class="cell small-10 flex-container align-middle">
+                        <h2 class="navTitle">Browse Categories</h2>
+                    </div>
+                    <div class="cell small-2">
+                        <div class="rightCell">
+                            <h2 class="navClose" data-close>&times;</h2>
+                        </div>
+                    </div>
+				</div>
+				
+				<!-- Menu -->
+                <div class="grid-x grid-padding-x">
+                    <div class="cell small-12"><a href="#">Halloween Shop</a></div>
+					<div class="cell small-12"><a href="#">Jewelry &amp; Accessories</a></div>
+					<div class="cell small-12"><a href="#">Clothing &amp; Shoes</a></div>
+					<div class="cell small-12"><a href="#">Home &amp; Living</a></div>
+					<div class="cell small-12"><a href="#">Wedding &amp; Party</a></div>
+					<div class="cell small-12"><a href="#">Toys &amp; Entertainment</a></div>
+					<div class="cell small-12"><a href="#">Art &amp; Collectibles</a></div>
+					<div class="cell small-12"><a href="#">Craft Supplies &amp; Tools</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Etsy logo and searchbar -->
+    <div class="grid-x grid-padding-x">
+        <div class="cell small-2 flex-container align-middle hide-for-large">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" id="hamburgerMenu" data-toggle="mobileNav">
+                <path d="M20,7H4C3.4,7,3,6.6,3,6s0.4-1,1-1h16c0.6,0,1,0.4,1,1S20.6,7,20,7z"/>
+                <path d="M15.2,13H4c-0.6,0-1-0.4-1-1s0.4-1,1-1h11.2c0.6,0,1,0.4,1,1S15.8,13,15.2,13z"/>
+                <path d="M20,19H4c-0.6,0-1-0.4-1-1s0.4-1,1-1h16c0.6,0,1,0.4,1,1S20.6,19,20,19z"/>
+            </svg>
         </div>
+        <div id="etsyLogo" class="cell small-6">Etsy</div>
+        <div class="cell small-2 show-for-large"></div>
+        <div class="cell small-2 flex-container align-middle"><div class="rightCell"><span id="etsySignIn">Sign In</span></div></div>
+        <div class="cell small-2 flex-container align-middle"><div class="rightCell"><img id="etsyCart" src="images/cart_icon.png" alt="shopping cart" /></div></div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="cell auto">
+            <input id="etsySearchText" class="input-field search-field" type="search" placeholder="Search for anything..." />
+            <img id="etsySearchButton" src="images/search_icon.png" alt="search button" />
+        </div>
+    </div>
+	
+	<!-- Navigation for laptop/desktop site -->
+	<div class="grid-x grid-padding-x show-for-large" style="margin-bottom: 0.75rem;">
+	    <div class="cell auto"><a href="#">Halloween Shop</a></div>
+        <div class="cell auto"><a href="#">Jewelry &amp; Accessories</a></div>
+        <div class="cell auto"><a href="#">Clothing &amp; Shoes</a></div>
+        <div class="cell auto"><a href="#">Home &amp; Living</a></div>
+        <div class="cell auto"><a href="#">Wedding &amp; Party</a></div>
+        <div class="cell auto"><a href="#">Toys &amp; Entertainment</a></div>
+        <div class="cell auto"><a href="#">Art &amp; Collectibles</a></div>
+        <div class="cell auto"><a href="#">Craft Supplies &amp; Tools</a></div>
+    </div>
+    
+    <!-- Unique picks -->
+    <div style="position: relative;">
+        <div id="uniquePicksBackgroundSmall" class="hide-for-large"></div>
+        <div id="uniquePicksBackgroundLarge" class="show-for-large"></div>
+    </div>
+    <div class="grid-container" style="margin-bottom: 2rem;">
+        <div style="position: relative; z-index: 1; padding-top: 1rem;">
+            <div class="grid-x grid-padding-x">
+                <div class="cell auto centerCell">
+                    <h1 id="uniquePicksSmall" class="hide-for-large">Prep for fall with unique picks.</h1>
+                    <h1 id="uniquePicksLarge" class="show-for-large">Prep for fall with unique picks.</h1>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-4 large-2" style="text-align: center;">
+                    <img class="uniquePickImage" src="images/halloween.jpg" alt="halloween" />
+                    <h3 class="uniquePickText">Halloween</h3>
+                </div>
+                <div class="cell small-4 large-2" style="text-align: center;">
+                    <img class="uniquePickImage" src="images/fall_finds.jpg" alt="fall finds" />
+                    <h3 class="uniquePickText">Fall Finds</h3>
+                </div>
+                <div class="cell small-4 large-2" style="text-align: center;">
+                    <img class="uniquePickImage" src="images/storage_organization.jpg" alt="storage and organization" />
+                    <h3 class="uniquePickText">Storage &amp; Organization</h3>
+                </div>
+                <div class="cell small-4 large-2" style="text-align: center;">
+                    <img class="uniquePickImage" src="images/personalized_gifts.jpg" alt="personalized gifts" />
+                    <h3 class="uniquePickText">Personalized Gifts</h3>
+                </div>
+                <div class="cell small-4 large-2" style="text-align: center;">
+                    <img class="uniquePickImage" src="images/jewelry.jpg" alt="jewelry" />
+                    <h3 class="uniquePickText">Jewelry</h3>
+                </div>
+                <div class="cell small-4 large-2" style="text-align: center;">
+                    <img class="uniquePickImage" src="images/on_sale.jpg" alt="on sale" />
+                    <h3 class="uniquePickText">On Sale</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Featured items -->
+    <div style="width: 100%; max-width: 1400px; margin: 0 auto;">
+        <!-- Popular gifts -->
+        <div class="grid-x grid-padding-x">
+            <h2 class="cell auto featureTitle">Popular gifts right now</h2>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="cell small-6 large-3" style="text-align: center;">
+                <img class="featureImage" src="images/wallet.jpg" alt="wallet" />
+                <p class="featureDescription">Anniversary Gift for Him, Wallet</p>
+                <p class="featureDescription">$28.99</p>
+            </div>
+            <div class="cell small-6 large-3">
+                <img class="featureImage" src="images/flower_giftbox.jpg" alt="flower gift box" />
+                <p class="featureDescription">Birth Flower Birthday Gift Box</p>
+                <p class="featureDescription">$21.75</p>
+            </div>
+            <div class="cell small-6 large-3">
+                <img class="featureImage" src="images/charcuterie_plank.jpg" alt="charcuterie plank" />
+                <p class="featureDescription">Personalized Charcuterie Planks</p>
+                <p class="featureDescription">$57.38</p>
+            </div>
+            <div class="cell small-6 large-3">
+                <img class="featureImage" src="images/turkish_towel.jpg" alt="Turkish towel" />
+                <p class="featureDescription">Personalized Turkish Towel</p>
+                <p class="featureDescription">$5.40</p>
+            </div>
+        </div>
+        <div style="margin-bottom: 2rem;"></div>
         
-        
-    </div><br>
-
-    <div>
-        <h1>Table Legend</h1>
-        <h3 style="color:black"><span style="background-color: #d46159">Violent Crimes</span></h3>
-        <h3 style="color:black"><span style="background-color: #73d9eb">Property Crimes</span></h3>
-        <h3 style="color:black"><span style="background-color: moccasin">Other Crimes</span></h3>
-        
-
-    </div><br>
-
-    <div id="testID">DATA</div>
+        <!-- Shop by recipient -->
+        <div class="grid-x grid-padding-x">
+            <h2 class="cell auto featureTitle">Shop by recipient</h2>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="cell small-6 large-3" style="text-align: center;">
+                <img class="featureImage" src="images/wallet.jpg" alt="wallet" />
+                <p class="featureDescription">Anniversary Gift for Him, Wallet</p>
+                <p class="featureDescription">$28.99</p>
+            </div>
+            <div class="cell small-6 large-3">
+                <img class="featureImage" src="images/flower_giftbox.jpg" alt="flower gift box" />
+                <p class="featureDescription">Birth Flower Birthday Gift Box</p>
+                <p class="featureDescription">$21.75</p>
+            </div>
+            <div class="cell small-6 large-3">
+                <img class="featureImage" src="images/charcuterie_plank.jpg" alt="charcuterie plank" />
+                <p class="featureDescription">Personalized Charcuterie Planks</p>
+                <p class="featureDescription">$57.38</p>
+            </div>
+            <div class="cell small-6 large-3">
+                <img class="featureImage" src="images/turkish_towel.jpg" alt="Turkish towel" />
+                <p class="featureDescription">Personalized Turkish Towel</p>
+                <p class="featureDescription">$5.40</p>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- include before closing </body> tag -->
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/vendor.js"></script>
+    <script src="js/foundation.js"></script>
+    <script type="application/javascript">
+        $(document).foundation();
+    </script>
 </body>
 </html>
