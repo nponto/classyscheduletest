@@ -1,0 +1,23 @@
+{
+    "name": "Webapp",
+    "version": "0.0.0",
+    "description": "Webapp using Leaflet map and crime data API",
+    "author": {
+        "name": "Noah Ponto",
+        "email": "pont7171@stthomas.edu"
+    },
+    "contributors": [
+        {
+            "name": "Erik Andersen",
+            "email": "ande8036@stthomas.edu"
+        }
+    ],
+    "main": "server.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nponto/webapp"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+    }
+}
